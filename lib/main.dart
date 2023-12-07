@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:developer';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 
@@ -78,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   initSocket() {
-    socket = IO.io('http://10.0.2.2:3333', <String, dynamic>{
+    socket = IO.io(dotenv.env['SOCKET_URL'], <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });
