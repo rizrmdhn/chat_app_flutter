@@ -1,4 +1,4 @@
-import 'package:core/domain/entities/group_message.dart';
+import 'package:core/domain/entities/user.dart';
 import 'package:equatable/equatable.dart';
 
 class GroupList extends Equatable {
@@ -7,7 +7,9 @@ class GroupList extends Equatable {
   final String description;
   final String groupImage;
   final bool isPrivate;
-  final List<GroupMessage> groupMessages;
+  final String message;
+  final String messageCreatedAt;
+  final User sender;
 
   const GroupList({
     required this.id,
@@ -15,10 +17,12 @@ class GroupList extends Equatable {
     required this.description,
     required this.groupImage,
     required this.isPrivate,
-    required this.groupMessages,
+    required this.message,
+    required this.messageCreatedAt,
+    required this.sender,
   });
 
   @override
   List<Object?> get props =>
-      [id, name, description, groupImage, isPrivate, groupMessages];
+      [id, name, description, groupImage, isPrivate, sender];
 }

@@ -1,4 +1,4 @@
-import 'package:core/data/models/group_message_model.dart';
+import 'package:core/data/models/user_model.dart';
 import 'package:core/domain/entities/group_list.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,7 +8,9 @@ class GroupListModel extends Equatable {
   final String description;
   final String groupImage;
   final bool isPrivate;
-  final List<GroupMessageModel> groupMessages;
+  final String message;
+  final String messageCreatedAt;
+  final UserModel sender;
 
   const GroupListModel({
     required this.id,
@@ -16,7 +18,9 @@ class GroupListModel extends Equatable {
     required this.description,
     required this.groupImage,
     required this.isPrivate,
-    required this.groupMessages,
+    required this.message,
+    required this.messageCreatedAt,
+    required this.sender,
   });
 
   factory GroupListModel.fromJson(Map<String, dynamic> json) => GroupListModel(
@@ -25,9 +29,9 @@ class GroupListModel extends Equatable {
         description: json['description'] as String,
         groupImage: json['group_image'] as String,
         isPrivate: json['is_private'] as bool,
-        groupMessages: (json['groupMessages'] as List<dynamic>)
-            .map((e) => GroupMessageModel.fromJson(e as Map<String, dynamic>))
-            .toList(),
+        message: json['message'] as String,
+        messageCreatedAt: json['message_created_at'] as String,
+        sender: UserModel.fromJson(json['sender'] as Map<String, dynamic>),
       );
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +40,7 @@ class GroupListModel extends Equatable {
         'description': description,
         'group_image': groupImage,
         'is_private': isPrivate,
-        'groupMessages': groupMessages.map((e) => e.toJson()).toList(),
+        'sender': sender.toJson(),
       };
 
   GroupList toEntity() => GroupList(
@@ -45,10 +49,20 @@ class GroupListModel extends Equatable {
         description: description,
         groupImage: groupImage,
         isPrivate: isPrivate,
-        groupMessages: groupMessages.map((e) => e.toEntity()).toList(),
+        message: message,
+        messageCreatedAt: messageCreatedAt,
+        sender: sender.toEntity(),
       );
 
   @override
-  List<Object?> get props =>
-      [id, name, description, groupImage, isPrivate, groupMessages];
+  List<Object?> get props => [
+        id,
+        name,
+        description,
+        groupImage,
+        isPrivate,
+        message,
+        messageCreatedAt,
+        sender
+      ];
 }
