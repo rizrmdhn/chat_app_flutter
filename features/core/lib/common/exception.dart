@@ -5,3 +5,9 @@ class DatabaseException implements Exception {
 
   DatabaseException(this.message);
 }
+
+class TokenException implements Exception {
+  final String message;
+
+  TokenException(this.message);
+}
