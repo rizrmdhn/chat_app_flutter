@@ -1,0 +1,125 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "chat_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "chat_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "chat_app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "auth",
+            "cwd": "features\\auth",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "auth (profile mode)",
+            "cwd": "features\\auth",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "auth (release mode)",
+            "cwd": "features\\auth",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "core",
+            "cwd": "features\\core",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "core (profile mode)",
+            "cwd": "features\\core",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "core (release mode)",
+            "cwd": "features\\core",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "friend",
+            "cwd": "features\\friend",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "friend (profile mode)",
+            "cwd": "features\\friend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "friend (release mode)",
+            "cwd": "features\\friend",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "group",
+            "cwd": "features\\group",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "group (profile mode)",
+            "cwd": "features\\group",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "group (release mode)",
+            "cwd": "features\\group",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "profile",
+            "cwd": "features\\profile",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "profile (profile mode)",
+            "cwd": "features\\profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "profile (release mode)",
+            "cwd": "features\\profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
