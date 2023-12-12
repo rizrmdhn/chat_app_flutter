@@ -1,15 +1,21 @@
+import 'dart:developer';
+import 'package:auth/presentation/bloc/auth_user/auth_user_bloc.dart';
+import 'package:auth/presentation/bloc/login/login_bloc.dart';
+import 'package:auth/presentation/bloc/register/register_bloc.dart';
 import 'package:auth/presentation/pages/auth/login_page.dart';
 import 'package:auth/presentation/pages/auth/register_page.dart';
 import 'package:core/common/constants.dart';
 import 'package:core/common/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'dart:developer';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:chat_app/injection.dart' as di;
 
 void main() async {
   await dotenv.load(fileName: ".env");
-
+  di.init();
   runApp(const MyApp());
 }
 
@@ -19,40 +25,55 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData.dark().copyWith(
-        colorScheme: kColorScheme,
-        primaryColor: kColorPrimary,
-        scaffoldBackgroundColor: kColorSecondary,
-        textTheme: kTextTheme,
-      ),
-      home: const LoginPage(),
-      navigatorObservers: [routeObserver],
-      onGenerateRoute: (RouteSettings settings) {
-        switch (settings.name) {
-          case '/home':
-            return MaterialPageRoute(
-              builder: (_) => const LoginPage(),
-            );
-          case LoginPage.routeName:
-            return MaterialPageRoute(
-              builder: (_) => const LoginPage(),
-            );
-          case RegisterPage.routeName:
-            return MaterialPageRoute(
-              builder: (_) => const RegisterPage(),
-            );
-          default:
-            return MaterialPageRoute(builder: (_) {
-              return Scaffold(
-                body: Center(
-                  child: Text('No route defined for ${settings.name}'),
-                ),
+    return MultiProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => di.locator<AuthUserBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<LoginBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<RegisterBloc>(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData.dark().copyWith(
+          colorScheme: kColorScheme,
+          primaryColor: kColorPrimary,
+          scaffoldBackgroundColor: kColorSecondary,
+          textTheme: kTextTheme,
+        ),
+        home: const LoginPage(),
+        navigatorObservers: [routeObserver],
+        onGenerateRoute: (RouteSettings settings) {
+          switch (settings.name) {
+            case '/home':
+              return MaterialPageRoute(
+                builder: (_) => const LoginPage(),
               );
-            });
-        }
-      },
+            case LoginPage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const LoginPage(),
+              );
+            case RegisterPage.routeName:
+              return MaterialPageRoute(
+                builder: (_) => const RegisterPage(),
+              );
+            default:
+              return MaterialPageRoute(
+                builder: (_) {
+                  return Scaffold(
+                    body: Center(
+                      child: Text('No route defined for ${settings.name}'),
+                    ),
+                  );
+                },
+              );
+          }
+        },
+      ),
     );
   }
 }

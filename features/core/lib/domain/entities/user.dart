@@ -5,9 +5,9 @@ class User extends Equatable {
   final String name;
   final String username;
   final String? email;
-  final String status;
-  final String aboutMe;
-  final String avatar;
+  final String? status;
+  final String? aboutMe;
+  final String? avatar;
 
   const User({
     required this.id,

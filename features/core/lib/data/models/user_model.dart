@@ -6,9 +6,9 @@ class UserModel extends Equatable {
   final String name;
   final String username;
   final String? email;
-  final String status;
-  final String aboutMe;
-  final String avatar;
+  final String? status;
+  final String? aboutMe;
+  final String? avatar;
 
   const UserModel({
     required this.id,
@@ -25,9 +25,9 @@ class UserModel extends Equatable {
         name: json['name'] as String,
         username: json['username'] as String,
         email: json['email'] as String?,
-        status: json['status'] as String,
-        aboutMe: json['about_me'] as String,
-        avatar: json['avatar'] as String,
+        status: json['status'] as String?,
+        aboutMe: json['about_me'] as String?,
+        avatar: json['avatar'] as String?,
       );
 
   Map<String, dynamic> toJson() => {

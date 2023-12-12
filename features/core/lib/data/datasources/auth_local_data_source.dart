@@ -3,9 +3,9 @@ import 'package:core/data/datasources/db/database_helper.dart';
 import 'package:core/data/models/access_token_model.dart';
 
 abstract class AuthLocalDataSource {
-  Future<void> saveAccessToken(AccessTokenModel accessToken);
+  Future<String> saveAccessToken(AccessTokenModel accessToken);
   Future<String> getAccessToken();
-  Future<void> deleteAccessToken();
+  Future<String> deleteAccessToken();
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -14,9 +14,10 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl({required this.databaseHelper});
 
   @override
-  Future<void> saveAccessToken(AccessTokenModel accessToken) async {
+  Future<String> saveAccessToken(AccessTokenModel accessToken) async {
     try {
       await databaseHelper.insertAccessToken(accessToken);
+      return 'Token saved';
     } catch (e) {
       throw DatabaseException(e.toString());
     }
@@ -37,9 +38,10 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Future<void> deleteAccessToken() async {
+  Future<String> deleteAccessToken() async {
     try {
       await databaseHelper.deleteAccessToken();
+      return 'Token deleted';
     } catch (e) {
       throw DatabaseException(e.toString());
     }

@@ -1,16 +1,19 @@
 import 'dart:convert';
+import 'package:core/common/exception.dart';
 import 'package:core/data/models/access_token_model.dart';
+import 'package:core/data/models/response/bad_request_response_model.dart';
 import 'package:core/data/models/response/login_response_model.dart';
 import 'package:core/data/models/response/register_response_model.dart';
+import 'package:core/data/models/user_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AuthRemoteDataSource {
   Future<AccessTokenModel> login({
-    required String email,
+    required String username,
     required String password,
   });
-  Future<RegisterDataModel> register({
+  Future<UserModel> register({
     required String name,
     required String username,
     required String email,
@@ -28,11 +31,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<AccessTokenModel> login({
-    required String email,
+    required String username,
     required String password,
   }) async {
     var map = <String, dynamic>{};
-    map['email'] = email;
+    map['username'] = username;
     map['password'] = password;
     final response = await client.post(
       Uri.parse('$_baseUrl/login'),
@@ -40,17 +43,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
 
     if (response.statusCode == 200) {
-      final accessToken =
-          LoginResponseModel.fromJson(json.decode(response.body));
+      final accessToken = LoginResponseModel.fromJson(
+        json.decode(response.body),
+      );
 
       return accessToken.data;
+    } else if (response.statusCode == 404) {
+      throw NotFoundException('User not found');
     } else {
       throw Exception('Failed to login');
     }
   }
 
   @override
-  Future<RegisterDataModel> register({
+  Future<UserModel> register({
     required String name,
     required String username,
     required String email,
@@ -66,10 +72,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       body: map,
     );
 
-    if (response.statusCode == 200) {
-      final registerResponse =
-          RegisterResponseModel.fromJson(json.decode(response.body));
+    if (response.statusCode == 201) {
+      final registerResponse = RegisterResponseModel.fromJson(
+        json.decode(response.body),
+      );
+
       return registerResponse.data;
+    } else if (response.statusCode == 400) {
+      final badRequestResponse = BadRequestResponseModel.fromJson(
+        json.decode(response.body),
+      );
+      final listOfErrors = badRequestResponse.toEntity().data.errors;
+      throw BadRequestException(
+        listOfErrors.map((e) => e.message).toList().join(', '),
+      );
     } else {
       throw Exception('Failed to register');
     }

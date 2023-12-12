@@ -12,6 +12,12 @@ class AccessTokenModel extends Equatable {
     required this.expiresAt,
   });
 
+  factory AccessTokenModel.fromEntity(AccessToken entity) => AccessTokenModel(
+        type: entity.type,
+        token: entity.token,
+        expiresAt: entity.expiresAt,
+      );
+
   factory AccessTokenModel.fromJson(Map<String, dynamic> json) =>
       AccessTokenModel(
         type: json['type'],
