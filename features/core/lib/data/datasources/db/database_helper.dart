@@ -30,7 +30,8 @@ class DatabaseHelper {
   Future<void> onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $_accessToken (
-        access_token TEXT
+        type TEXT,
+        token TEXT,
         expires_at TEXT
       )
     ''');
@@ -38,6 +39,7 @@ class DatabaseHelper {
 
   Future<void> insertAccessToken(AccessTokenModel accessToken) async {
     final db = await database;
+
     await db!.insert(_accessToken, accessToken.toJson());
   }
 

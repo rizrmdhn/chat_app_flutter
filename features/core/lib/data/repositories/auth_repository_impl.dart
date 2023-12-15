@@ -68,6 +68,25 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, String>> logout(
+    String accessToken,
+  ) async {
+    try {
+      final result = await remoteDataSource.logout(accessToken);
+      await localDataSource.deleteAccessToken();
+      return Right(result);
+    } on ServerException {
+      return const Left(ServerFailure('Server Failure'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Connection Failure'));
+    } on NotFoundException catch (e) {
+      return Left(NotFoundFailure(e.message));
+    } catch (e) {
+      return const Left(ServerFailure('Unknown Failure'));
+    }
+  }
+
+  @override
   Future<Either<Failure, String>> saveAccessToken({
     required AccessToken accessToken,
   }) async {

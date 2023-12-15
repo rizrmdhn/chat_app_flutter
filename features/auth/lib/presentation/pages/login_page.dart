@@ -1,9 +1,10 @@
 import 'package:auth/presentation/bloc/login/login_bloc.dart';
-import 'package:auth/presentation/pages/auth/register_page.dart';
-import 'package:auth/presentation/pages/widgets/login_form.dart';
+import 'package:auth/presentation/pages/register_page.dart';
+import 'package:auth/presentation/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:core/common/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:message/presentation/pages/message_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/login';
@@ -37,7 +38,23 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     // scaffold with child column in center of screen
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state is LoginUserLoaded) {
+          Navigator.pushReplacementNamed(context, MessagePage.routeName);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login successful'),
+            ),
+          );
+        } else if (state is LoginError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -75,23 +92,6 @@ class _LoginPageState extends State<LoginPage> {
                             Login(
                               _usernameController.text,
                               _passwordController.text,
-                            ),
-                          );
-                        }
-
-                        final state = BlocProvider.of<LoginBloc>(context).state;
-
-                        if (state is LoginError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.message),
-                            ),
-                          );
-                        } else if (state is LoginUserLoaded) {
-                          Navigator.pushNamed(context, '/home');
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Login successful'),
                             ),
                           );
                         }

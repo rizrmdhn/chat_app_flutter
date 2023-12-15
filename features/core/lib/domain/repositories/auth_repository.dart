@@ -14,6 +14,9 @@ abstract class AuthRepository {
     required String username,
     required String password,
   });
+  Future<Either<Failure, String>> logout(
+    String accessToken,
+  );
   Future<Either<Failure, String>> saveAccessToken({
     required AccessToken accessToken,
   });

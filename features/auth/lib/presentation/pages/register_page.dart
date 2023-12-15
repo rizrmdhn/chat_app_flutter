@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:auth/presentation/bloc/register/register_bloc.dart';
-import 'package:auth/presentation/pages/auth/login_page.dart';
-import 'package:auth/presentation/pages/widgets/register_form.dart';
+import 'package:auth/presentation/pages/login_page.dart';
+import 'package:auth/presentation/widgets/register_form.dart';
 import 'package:flutter/material.dart';
 import 'package:core/common/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,8 +90,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                           final state =
                               BlocProvider.of<RegisterBloc>(context).state;
-
-                          log(state.toString());
 
                           if (state is RegisterError) {
                             ScaffoldMessenger.of(context).showSnackBar(

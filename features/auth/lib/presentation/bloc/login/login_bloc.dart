@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:auth/presentation/bloc/auth_user/auth_user_bloc.dart';
 import 'package:core/domain/entities/access_token.dart';
 import 'package:core/domain/entities/user.dart';
 import 'package:core/domain/usecases/get_me.dart';
@@ -13,11 +16,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserLogin login;
   final SaveAccessToken saveAccessToken;
   final GetMe getMe;
+  final AuthUserBloc authUserBloc;
 
   LoginBloc(
     this.login,
     this.saveAccessToken,
     this.getMe,
+    this.authUserBloc,
   ) : super(LoginInitial()) {
     on<Login>((event, emit) => getLogin(event, emit));
   }
@@ -43,7 +48,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final resultMe = await getMe.execute(data.token);
         resultMe.fold(
           (failure) => emit(LoginError(failure.message)),
-          (data) => emit(LoginUserLoaded(data)),
+          (data) {
+            emit(LoginUserLoaded(data));
+            authUserBloc.add(LoadAuthUser());
+          },
         );
       },
     );

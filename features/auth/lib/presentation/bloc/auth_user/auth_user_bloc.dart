@@ -23,21 +23,22 @@ class AuthUserBloc extends Bloc<AuthUserEvent, AuthUserState> {
     Emitter<AuthUserState> emit,
   ) async {
     final resultToken = await getAccessToken.execute();
+    await resultToken.fold(
+      (failure) async {
+        emit(AuthUserError(failure.message));
+      },
+      (data) async {
+        emit(AuthUserLoading());
 
-    resultToken.fold(
-      (failure) => emit(AuthUserError(failure.message)),
-      (data) => LoadAuthUser(data),
-    );
+        final result = await getMe.execute(data);
 
-    final accessToken = event.accessToken;
-
-    emit(AuthUserLoading());
-
-    final result = await getMe.execute(accessToken);
-
-    result.fold(
-      (failure) => emit(AuthUserError(failure.message)),
-      (data) => emit(AuthUserLoaded(data)),
+        result.fold(
+          (failure) => emit(AuthUserError(failure.message)),
+          (data) async {
+            emit(AuthUserLoaded(data));
+          },
+        );
+      },
     );
   }
 }
